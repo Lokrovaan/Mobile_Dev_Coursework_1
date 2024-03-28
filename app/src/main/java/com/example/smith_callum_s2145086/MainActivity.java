@@ -1,24 +1,119 @@
+// Name                 Callum Smith
+// Student ID           S2145086
+// Programme of Study   BSc Computing
 package com.example.smith_callum_s2145086;
 
-import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+
+public class MainActivity extends AppCompatActivity implements OnClickListener
+{
+    private TextView rawDataDisplay;
+    private Button startButton;
+    private String result;
+    private String url1="";
+    private String urlSource="https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/2643123";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        // Set up the raw links to the graphical components
+        rawDataDisplay = (TextView)findViewById(R.id.rawDataDisplay);
+        startButton = (Button)findViewById(R.id.startButton);
+        startButton.setOnClickListener(this);
+
+        // More Code goes here
     }
+
+    public void onClick(View aview)
+    {
+        startProgress();
+    }
+
+    public void startProgress()
+    {
+        // Run network access on a separate thread;
+        new Thread(new Task(urlSource)).start();
+    } //
+
+    // Need separate thread to access the internet resource over network
+    // Other neater solutions should be adopted in later iterations.
+    private class Task implements Runnable
+    {
+        private String url;
+
+        public Task(String aurl)
+        {
+            url = aurl;
+        }
+        @Override
+        public void run()
+        {
+
+            URL aurl;
+            URLConnection yc;
+            BufferedReader in = null;
+            String inputLine = "";
+
+
+            Log.e("MyTag","in run");
+
+            try
+            {
+                Log.e("MyTag","in try");
+                aurl = new URL(url);
+                yc = aurl.openConnection();
+                in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
+                while ((inputLine = in.readLine()) != null)
+                {
+                    result = result + inputLine;
+                    Log.e("MyTag",inputLine);
+
+                }
+                in.close();
+            }
+            catch (IOException ae)
+            {
+                Log.e("MyTag", "ioexception");
+            }
+
+            //Get rid of the first tag <?xml version="1.0" encoding="utf-8"?>
+            int i = result.indexOf(">");
+            result = result.substring(i+1);
+            Log.e("MyTag - cleaned",result);
+
+
+            //
+            // Now that you have the xml data you can parse it
+            //
+
+
+            // Now update the TextView to display raw XML data
+            // Probably not the best way to update TextView
+            // but we are just getting started !
+
+            MainActivity.this.runOnUiThread(new Runnable()
+            {
+                public void run() {
+                    Log.d("UI thread", "I am the UI thread");
+                    rawDataDisplay.setText(result);
+                }
+            });
+        }
+
+    }
+
 }
