@@ -1,11 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Callum Smith - S2145086-->
-<!--  MPD XML Starter code - main diet 2023-2024  -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="fill_parent">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
-        <TextView android:id="@+id/salutation" android:layout_width="fill_parent" android:layout_height="wrap_content" android:textSize="20sp" android:text="Welcome to Mobile Platform Development"/>
-        <Button android:id="@+id/startButton" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Press to get data"/>
-        <TextView android:id="@+id/acknowledgement" android:layout_width="fill_parent" android:layout_height="wrap_content" android:textSize="20sp" android:text="Contains BBC weather data from public RSS"/>
-        <TextView android:id="@+id/rawDataDisplay" android:layout_width="fill_parent" android:layout_height="wrap_content" android:textSize="20sp" android:text="Raw Data is Displayed here"/>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/PowderBlue"
+    >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/titleBar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/SkyBlue"
+            android:text="BBC Weather Forecast App"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            />
+
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/Orchid"
+            android:text="Press to get data"
+            android:textColor="@color/Black" />
+
+        <TextView
+            android:id="@+id/rawDataDisplay"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Raw Data is Displayed here"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/acknowledgement"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Contains BBC weather data from public RSS"
+            android:textSize="20sp" />
+
     </LinearLayout>
 </ScrollView>
