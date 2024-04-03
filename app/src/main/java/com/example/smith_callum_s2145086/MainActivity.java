@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-
+import java.util.LinkedList;
 public class MainActivity extends AppCompatActivity implements OnClickListener
 {
     private TextView rawDataDisplay;
@@ -113,6 +113,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener
                 }
             });
         }
+        public LinkedList<DayWeather> xmlToObject (String result){
+
+    }
 
     }
 
