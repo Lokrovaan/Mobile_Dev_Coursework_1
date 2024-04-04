@@ -1,6 +1,6 @@
 package com.example.smith_callum_s2145086;
 
-public class DayWeather {
+public class DayOfWeather {
     private String title;
     private String description;
 
@@ -18,9 +18,7 @@ public class DayWeather {
     }
     @Override
     public String toString() {
-        return "DayWeather{" +
-                "title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        return "Day of Weather: " + title
+                + "\nDescription: " + description + "\n";
     }
 }
