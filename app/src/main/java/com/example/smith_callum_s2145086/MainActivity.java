@@ -111,16 +111,63 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                         else if (xpp.getName().equalsIgnoreCase("title") && useTitleAndDescription) {
                             // Now just get the associated text
                             String temp = xpp.nextText();
-                            // Do something with text
                             Log.d("MyTag", "title is " + temp);
-                            dayOfWeather.setTitle(temp);
+
+                            //split <title> into day and weather data
+                            String[] titleArray = temp.split(",");
+                            String summary = titleArray[0];
+                            String day = summary.split(":")[0].trim();
+                            String weather = summary.split(":")[1].trim();
+
+                            Log.d("MyTag", "Day is " + day +
+                                    "\nWeather is " + weather);
+                            dayOfWeather.setDay(day);
+                            dayOfWeather.setWeather(weather);
                         }
                         else if (xpp.getName().equalsIgnoreCase("description")&& useTitleAndDescription) {
                             // Now just get the associated text
                             String temp = xpp.nextText();
-                            // Do something with text
                             Log.d("MyTag", "description is " + temp);
-                            dayOfWeather.setDescription(temp);
+
+                            //split <description> into multiple weather data variables
+                            String[] descArray = temp.split(",");
+
+                            String maxTemp = descArray[0].trim();
+                            String minTemp = descArray[1].trim();
+                            String windDirection = descArray[2].trim();
+                            String windSpeed = descArray[3].trim();
+                            String visibility = descArray[4].trim();
+                            String pressure = descArray[5].trim();
+                            String humidity = descArray[6].trim();
+                            String uvRisk = descArray[7].trim();
+                            String pollution = descArray[8].trim();
+                            String sunriseTime = descArray[9].trim();
+                            String sunsetTime = descArray[10].trim();
+
+                            Log.d("MyTag", "maxTemp is " + maxTemp+
+                                    "\nminTemp is " + minTemp +
+                                    "\nwindDirection is " + windDirection +
+                                    "\nwindSpeed is " + windSpeed +
+                                    "\nvisibility is " + visibility +
+                                    "\npressure is " + pressure +
+                                    "\nhumidity is " + humidity +
+                                    "\nuvRisk is " + uvRisk +
+                                    "\npollution is " + pollution +
+                                    "\nsunriseTime is " + sunriseTime +
+                                    "\nsunsetTime is " + sunsetTime);
+
+                            dayOfWeather.setMaxTemp(maxTemp);
+                            dayOfWeather.setMinTemp(minTemp);
+                            dayOfWeather.setWindDirection(windDirection);
+                            dayOfWeather.setWindSpeed(windSpeed);
+                            dayOfWeather.setVisibility(visibility);
+                            dayOfWeather.setPressure(pressure);
+                            dayOfWeather.setHumidity(humidity);
+                            dayOfWeather.setUVRisk(uvRisk);
+                            dayOfWeather.setPollution(pollution);
+                            dayOfWeather.setSunriseTime(sunriseTime);
+                            dayOfWeather.setSunsetTime(sunsetTime);
+
                         }
                     } else if (eventType == XmlPullParser.END_TAG) // Found an end tag
                     {
