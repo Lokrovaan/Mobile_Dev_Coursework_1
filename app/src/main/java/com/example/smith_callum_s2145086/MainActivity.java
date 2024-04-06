@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -25,32 +26,70 @@ import java.net.URLConnection;
 import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
+    private ViewFlipper flip;
     private TextView rawDataDisplay;
-    private Button startButton;
     private String result;
-    private String url1 = "";
-    private String urlSource = "https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/2643123";
+    private Button glasgowButton;
+    private Button londonButton;
+    private Button newYorkButton;
+    private Button omanButton;
+    private Button mauritiusButton;
+    private Button bangladeshButton;
+    private String glasgowCode = "2648579";
+    private String londonCode = "2643743";
+    private String newYorkCode = "5128581";
+    private String omanCode = "287286";
+    private String mauritiusCode = "934154";
+    private String bangladeshCode = "1185241";
+
+    private String urlSource = "https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/";
     private LinkedList<DayOfWeather> dayOfWeatherList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Set up the raw links to the graphical components
+
+        // Set up the links to the graphical components
+        flip = (ViewFlipper) findViewById(R.id.myVFlip);
         rawDataDisplay = (TextView) findViewById(R.id.rawDataDisplay);
-        startButton = (Button) findViewById(R.id.startButton);
-        startButton.setOnClickListener(this);
-        dayOfWeatherList = new LinkedList<DayOfWeather>();
+        glasgowButton = (Button) findViewById(R.id.glasgowButton);
+        londonButton = (Button) findViewById(R.id.londonButton);
+        newYorkButton = (Button) findViewById(R.id.newYorkButton);
+        omanButton = (Button) findViewById(R.id.omanButton);
+        mauritiusButton = (Button) findViewById(R.id.mauritiusButton);
+        bangladeshButton = (Button) findViewById(R.id.bangladeshButton);
+
+        //Set listener for buttons
+        glasgowButton.setOnClickListener(this);
+        londonButton.setOnClickListener(this);
+        newYorkButton.setOnClickListener(this);
+        omanButton.setOnClickListener(this);
+        mauritiusButton.setOnClickListener(this);
+        bangladeshButton.setOnClickListener(this);
+
         // More Code goes here
     }
 
-    public void onClick(View aview) {
-        startProgress();
+    public void onClick(View v) {
+        if (v == glasgowButton)
+            retrieveWeatherRSS(glasgowCode);
+        else if (v == newYorkButton) {
+            retrieveWeatherRSS(newYorkCode);
+        } else if (v == londonButton) {
+            retrieveWeatherRSS(londonCode);
+        } else if (v == omanButton) {
+            retrieveWeatherRSS(omanCode);
+        } else if (v == mauritiusButton) {
+            retrieveWeatherRSS(mauritiusCode);
+        } else if (v == bangladeshButton) {
+            retrieveWeatherRSS(bangladeshCode);
+        }
     }
 
-    public void startProgress() {
+    public void retrieveWeatherRSS(String rssCode) {
         // Run network access on a separate thread;
-        new Thread(new Task(urlSource)).start();
+        new Thread(new Task(urlSource+rssCode)).start();
     }
 
     // Need separate thread to access the internet resource over network
@@ -92,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             Log.e("MyTag - cleaned", result);
 
             //Parse cleaned RSS Feed data
+            dayOfWeatherList = new LinkedList<>();
             DayOfWeather dayOfWeather = null;
             boolean useTitleAndDescription = false;
             try {
@@ -99,6 +139,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 factory.setNamespaceAware(true);
                 XmlPullParser xpp = factory.newPullParser();
                 xpp.setInput(new StringReader(result));
+                //resets result for next PullParser input
+                result = "";
                 int eventType = xpp.getEventType();
                 while (eventType != XmlPullParser.END_DOCUMENT) {
                     if (eventType == XmlPullParser.START_TAG) // Found a start tag
@@ -187,6 +229,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
             }
 
             Log.d("MyTag", "End of document reached");
+
             MainActivity.this.runOnUiThread(new Runnable() {
                 public void run() {
                     Log.d("UI thread", "I am the UI thread");

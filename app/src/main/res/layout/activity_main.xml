@@ -1,85 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?><!--Callum Smith - S2145086-->
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bottomLayout"
+    android:id="@+id/myVFlip"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/PowderBlue">
+    android:layout_gravity="center">
 
-    <LinearLayout
-        android:id="@+id/head"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/CornflowerBlue"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/threeDayVIew"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/PowderBlue">
 
-        <TextView
-            android:id="@+id/titleText"
+        <LinearLayout
+            android:id="@+id/head"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="BBC Weather Forecast App"
-            android:textAlignment="center"
-            android:textColor="@color/White"
-            android:textSize="30sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/body"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/foot"
-        app:layout_constraintTop_toBottomOf="@+id/head">
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:background="@color/CornflowerBlue"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/rawDataDisplay"
+                android:id="@+id/titleText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Weather data here"
-                android:textSize="20sp" />
-        </ScrollView>
+                android:text="BBC Weather Forecast App"
+                android:textAlignment="center"
+                android:textColor="@color/White"
+                android:textSize="30sp" />
 
-    </LinearLayout>
+        </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@id/foot"
-        >
+        <LinearLayout
+            android:id="@+id/dataDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/buttonSection"
+            app:layout_constraintTop_toBottomOf="@id/head">
 
-        <Button
-            android:id="@+id/startButton"
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/rawDataDisplay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text=""
+                    android:textSize="20sp" />
+            </ScrollView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buttonSection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/Orchid"
-            android:text="Press to get data"
-            android:textColor="@color/White" />
-    </LinearLayout>
+            android:background="@color/CornflowerBlue"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/foot"
+            app:layout_constraintTop_toBottomOf="@id/dataDisplay">
 
-    <LinearLayout
-        android:id="@+id/foot"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/CornflowerBlue"
-        app:layout_constraintBottom_toBottomOf="parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Select a city below to view it's weather information"
+                android:textAlignment="center"
+                android:textColor="@color/White"
+                android:textSize="17sp" />
 
-        <TextView
-            android:id="@+id/bottomText"
+            <TableLayout
+                android:id="@+id/buttonTable"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/glasgowButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/Orchid"
+                        android:text="Glasgow"
+                        android:textColor="@color/White" />
+
+                    <Button
+                        android:id="@+id/newYorkButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/Orchid"
+                        android:text="New York"
+                        android:textColor="@color/White" />
+
+                    <Button
+                        android:id="@+id/londonButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/Orchid"
+                        android:text="London"
+                        android:textColor="@color/White" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/omanButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/Orchid"
+                        android:text="Oman"
+                        android:textColor="@color/White" />
+
+                    <Button
+                        android:id="@+id/mauritiusButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/Orchid"
+                        android:text="Mauritius"
+                        android:textColor="@color/White" />
+
+                    <Button
+                        android:id="@+id/bangladeshButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/Orchid"
+                        android:text="Bangladesh"
+                        android:textColor="@color/White" />
+                </TableRow>
+
+            </TableLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/foot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Callum Smith - S2145086"
-            android:textAlignment="center"
-            android:textColor="@color/White"
-            android:textSize="30sp" />
+            android:background="@color/CornflowerBlue"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/bottomText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Callum Smith - S2145086"
+                android:textAlignment="center"
+                android:textColor="@color/White"
+                android:textSize="10sp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ViewFlipper>
