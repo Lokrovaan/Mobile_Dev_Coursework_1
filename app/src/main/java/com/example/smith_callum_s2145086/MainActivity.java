@@ -35,14 +35,14 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     private Button omanButton;
     private Button mauritiusButton;
     private Button bangladeshButton;
-    private String glasgowCode = "2648579";
-    private String londonCode = "2643743";
-    private String newYorkCode = "5128581";
-    private String omanCode = "287286";
-    private String mauritiusCode = "934154";
-    private String bangladeshCode = "1185241";
+    private final String glasgowCode = "2648579";
+    private final String londonCode = "2643743";
+    private final String newYorkCode = "5128581";
+    private final String omanCode = "287286";
+    private final String mauritiusCode = "934154";
+    private final String bangladeshCode = "1185241";
 
-    private String urlSource = "https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/";
+    private final String urlSource = "https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/";
     private LinkedList<DayOfWeather> dayOfWeatherList;
 
     @Override
