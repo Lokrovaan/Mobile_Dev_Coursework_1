@@ -1,5 +1,5 @@
 package com.example.smith_callum_s2145086;
-
+//Callum Smith - S2145086
 public class DayOfWeather {
     //retrieved from <title> tag in RSS feed
     private String day;

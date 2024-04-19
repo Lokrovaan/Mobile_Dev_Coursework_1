@@ -1,5 +1,5 @@
 package com.example.smith_callum_s2145086;
-
+//Callum Smith - S2145086
 public class Observation {
     //Retrieved from <title> tag in RSS Feed
     private String day;
@@ -93,5 +93,20 @@ public class Observation {
 
     public void setVisibility(String visibility) {
         this.visibility = visibility;
+    }
+
+    @Override
+    public String toString() {
+        return  day + "\n" +
+                time + "\n" +
+                summary + "\n" +
+                currentTemperature + "\n" +
+                windDirection + "\n" +
+                windSpeed + "\n" +
+                humidity + "\n" +
+                pressure + "\n" +
+                pressureStatus + "\n" +
+                visibility + "\n" +
+                "\n";
     }
 }

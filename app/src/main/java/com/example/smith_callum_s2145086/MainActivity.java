@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 import android.widget.ViewSwitcher;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -27,20 +28,24 @@ import java.io.StringReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.LinkedList;
-
+//Callum Smith - S2145086
 public class MainActivity extends AppCompatActivity implements OnClickListener {
     private ViewSwitcher switcher;
     private Handler updateUIHandler = null;
     private final static int RETRIEVE_OBSERVATION = 1;
     private final static int RETRIEVE_3_DAY_WEATHER = 2;
-    private TextView rawDataDisplay;
+    private TextView observationDisplay;
+    private TextView threeDayWeatherDisplay;
     private String result;
+    private Button glasgowObservationButton;
     private Button glasgowButton;
     private Button londonButton;
     private Button newYorkButton;
     private Button omanButton;
     private Button mauritiusButton;
     private Button bangladeshButton;
+    private Button toHomeButton;
+    private Button toLocationsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +56,17 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
         // Set up the links to the graphical components
         switcher = (ViewSwitcher) findViewById(R.id.myVSwitcher);
-        rawDataDisplay = (TextView) findViewById(R.id.rawDataDisplay);
+        observationDisplay = (TextView) findViewById(R.id.observationDisplay);
+        threeDayWeatherDisplay = (TextView) findViewById(R.id.threeDayDataDisplay);
+        glasgowObservationButton = (Button) findViewById(R.id.currentGlasgowWeatherButton);
         glasgowButton = (Button) findViewById(R.id.glasgowButton);
         londonButton = (Button) findViewById(R.id.londonButton);
         newYorkButton = (Button) findViewById(R.id.newYorkButton);
         omanButton = (Button) findViewById(R.id.omanButton);
         mauritiusButton = (Button) findViewById(R.id.mauritiusButton);
         bangladeshButton = (Button) findViewById(R.id.bangladeshButton);
+        toHomeButton = (Button) findViewById(R.id.toHomeButton);
+        toLocationsButton = (Button) findViewById(R.id.toLocationsButton);
 
         //Set listener for buttons
         glasgowButton.setOnClickListener(this);
@@ -66,12 +75,16 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         omanButton.setOnClickListener(this);
         mauritiusButton.setOnClickListener(this);
         bangladeshButton.setOnClickListener(this);
-
-        // More Code goes here
+        toHomeButton.setOnClickListener(this);
+        toLocationsButton.setOnClickListener(this);
+        glasgowObservationButton.setOnClickListener(this);
     }
 
     public void onClick(View v) {
-        if (v == glasgowButton) {
+        if(v == glasgowObservationButton){
+            new Thread(new RetrieveObservation()).start();
+        }
+        else if (v == glasgowButton) {
             String glasgowCode = "2648579";
             new Thread(new RetrieveThreeDayWeather(glasgowCode)).start();
         } else if (v == newYorkButton) {
@@ -89,6 +102,10 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         } else if (v == bangladeshButton) {
             String bangladeshCode = "1185241";
             new Thread(new RetrieveThreeDayWeather(bangladeshCode)).start();
+        } else if (v == toHomeButton) {
+            switcher.showPrevious();
+        } else if (v == toLocationsButton) {
+            switcher.showNext();
         }
     }
 
@@ -99,9 +116,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 public void handleMessage(Message msg) {
                     // Check which thread sent the message
                     if (msg.what == RETRIEVE_OBSERVATION) {
-                        //TODO update UI with observation
+                        observationDisplay.setText((String)msg.obj);
                     } else if (msg.what == RETRIEVE_3_DAY_WEATHER) {
-                        //TODO update UI with 3 day weather info
+                        threeDayWeatherDisplay.setText((String)msg.obj);
                     }
                 }
             };
@@ -109,11 +126,8 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     }
 
     class RetrieveObservation implements Runnable {
-        String url = "https://weather-broker-cdn.api.bbci.co.uk/en/observation/rss/";
+        String url = "https://weather-broker-cdn.api.bbci.co.uk/en/observation/rss/2648579";
 
-        public RetrieveObservation(String rssCode) {
-            url = url + rssCode;
-        }
 
         @Override
         public void run() {
@@ -168,15 +182,17 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                             Log.d("MyTag", "title is " + temp);
 
                             //split <title> into day and weather data
-                            String[] titleArray = temp.split(",");
-                            String summary = titleArray[0];
-                            String day = summary.split(":")[0].trim();
-                            String weather = summary.split(":")[1].trim();
+                            String[] titleArray = temp.split("-");
+                            String day = titleArray[0].trim();
+                            String time = titleArray[1].split(":")[0]+titleArray[1].split(":")[1].trim();
+                            String summary = titleArray[1].split(":")[2].split(",")[0].trim();
 
                             Log.d("MyTag", "Day is " + day +
-                                    "\nWeather is " + weather);
+                                    "\nWeather is " + summary +
+                                    "\nTime is " + time);
                             observation.setDay(day);
-                            observation.setSummary(weather);
+                            observation.setTime(time);
+                            observation.setSummary(summary);
                         } else if (xpp.getName().equalsIgnoreCase("description") && useTitleAndDescription) {
                             // Now just get the associated text
                             String temp = xpp.nextText();
@@ -184,37 +200,81 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
                             //split <description> into multiple weather data variables
                             String[] descArray = temp.split(",");
-                            //TODO change to String.contains and iterate through String array to add data to weather object
-                            String maxTemp = descArray[0].trim();
-                            String minTemp = descArray[1].trim();
-                            String windDirection = descArray[2].trim();
-                            String windSpeed = descArray[3].trim();
-                            String visibility = descArray[4].trim();
-                            String pressure = descArray[5].trim();
-                            String humidity = descArray[6].trim();
-                            String uvRisk = descArray[7].trim();
-                            String pollution = descArray[8].trim();
-                            String sunriseTime = descArray[9].trim();
-                            String sunsetTime = descArray[10].trim();
+                            Log.d("MyTag", "descArray is " + descArray.length + " entries long");
 
-                            Log.d("MyTag", "maxTemp is " + maxTemp +
-                                    "\nminTemp is " + minTemp +
-                                    "\nwindDirection is " + windDirection +
-                                    "\nwindSpeed is " + windSpeed +
-                                    "\nvisibility is " + visibility +
-                                    "\npressure is " + pressure +
-                                    "\nhumidity is " + humidity +
-                                    "\nuvRisk is " + uvRisk +
-                                    "\npollution is " + pollution +
-                                    "\nsunriseTime is " + sunriseTime +
-                                    "\nsunsetTime is " + sunsetTime);
-
-                            observation.setCurrentTemperature(maxTemp);
-                            observation.setWindDirection(windDirection);
-                            observation.setWindSpeed(windSpeed);
-                            observation.setVisibility(visibility);
-                            observation.setPressure(pressure);
-                            observation.setHumidity(humidity);
+                            int count = 0;
+                            for (String j : descArray){
+                                if(descArray[count].contains("Temperature")){
+                                    String currentTemp = descArray[count].trim();
+                                    observation.setCurrentTemperature(currentTemp);
+                                    Log.d("MyTag", "maxTemp is " + currentTemp);
+                                    count++;
+                                }
+                                else if (descArray[count].contains("Wind Direction")){
+                                    String windDirection = descArray[count].trim();
+                                    observation.setWindDirection(windDirection);
+                                    Log.d("MyTag", "windDirection is " + windDirection);
+                                    count++;
+                                }
+                                else if (descArray[count].contains("Wind Speed")){
+                                    String windSpeed = descArray[count].trim();
+                                    observation.setWindSpeed(windSpeed);
+                                    Log.d("MyTag", "windSpeed is " + windSpeed);
+                                    count++;
+                                }
+                                else if (descArray[count].contains("Visibility")){
+                                    String visibility = descArray[count].trim();
+                                    observation.setVisibility(visibility);
+                                    Log.d("MyTag", "visibility is " + visibility);
+                                    count++;
+                                }
+                                else if (descArray[count].contains("Pressure")){
+                                    String pressure = descArray[count].trim();
+                                    observation.setPressure(pressure);
+                                    Log.d("MyTag", "pressure is " + pressure);
+                                    count++;
+                                }
+                                else if(descArray[count].contains("Humidity")){
+                                    String humidity = descArray[count].trim();
+                                    observation.setHumidity(humidity);
+                                    Log.d("MyTag", "humidity is " + humidity);
+                                    count++;
+                                }
+                                else{
+                                    count++;
+                                }
+                            }
+                            //Check if any variables weren't assigned and give them a value so they aren't null
+                            if (observation.getDay() == null){
+                                observation.setDay("Day Unavailable");
+                            }
+                            if (observation.getTime() == null){
+                                observation.setTime("Time Unavailable");
+                            }
+                            if (observation.getSummary() == null){
+                                observation.setSummary("Summary unavailable");
+                            }
+                            if (observation.getCurrentTemperature()== null){
+                                observation.setCurrentTemperature("Current Temperature Unavailable");
+                            }
+                            if (observation.getWindDirection() == null){
+                                observation.setWindDirection("Wind Direction Unavailable");
+                            }
+                            if (observation.getWindSpeed() == null){
+                                observation.setWindSpeed("Wind Speed Unavailable");
+                            }
+                            if (observation.getVisibility() == null){
+                                observation.setVisibility("Visibility Unavailable");
+                            }
+                            if (observation.getPressure() == null){
+                                observation.setPressure("Pressure Unavailable");
+                            }
+                            if (observation.getPressureStatus() == null){
+                                observation.setPressureStatus("Pressure Status Unavailable");
+                            }
+                            if (observation.getHumidity() == null){
+                                observation.setHumidity("Humidity Unavailable");
+                            }
                         }
                     } else if (eventType == XmlPullParser.END_TAG) // Found an end tag
                     {
@@ -325,43 +385,120 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
                             //split <description> into multiple weather data variables
                             String[] descArray = temp.split(",");
+                            Log.d("MyTag", "descArray is " + descArray.length + " entries long");
 
-                            String maxTemp = descArray[0].trim();
-                            String minTemp = descArray[1].trim();
-                            String windDirection = descArray[2].trim();
-                            String windSpeed = descArray[3].trim();
-                            String visibility = descArray[4].trim();
-                            String pressure = descArray[5].trim();
-                            String humidity = descArray[6].trim();
-                            String uvRisk = descArray[7].trim();
-                            String pollution = descArray[8].trim();
-                            String sunriseTime = descArray[9].trim();
-                            String sunsetTime = descArray[10].trim();
-
-                            Log.d("MyTag", "maxTemp is " + maxTemp +
-                                    "\nminTemp is " + minTemp +
-                                    "\nwindDirection is " + windDirection +
-                                    "\nwindSpeed is " + windSpeed +
-                                    "\nvisibility is " + visibility +
-                                    "\npressure is " + pressure +
-                                    "\nhumidity is " + humidity +
-                                    "\nuvRisk is " + uvRisk +
-                                    "\npollution is " + pollution +
-                                    "\nsunriseTime is " + sunriseTime +
-                                    "\nsunsetTime is " + sunsetTime);
-
-                            dayOfWeather.setMaxTemp(maxTemp);
-                            dayOfWeather.setMinTemp(minTemp);
-                            dayOfWeather.setWindDirection(windDirection);
-                            dayOfWeather.setWindSpeed(windSpeed);
-                            dayOfWeather.setVisibility(visibility);
-                            dayOfWeather.setPressure(pressure);
-                            dayOfWeather.setHumidity(humidity);
-                            dayOfWeather.setUVRisk(uvRisk);
-                            dayOfWeather.setPollution(pollution);
-                            dayOfWeather.setSunriseTime(sunriseTime);
-                            dayOfWeather.setSunsetTime(sunsetTime);
-
+                            int count = 0;
+                            for (String j : descArray){
+                                if(descArray[count].contains("Maximum Temperature")){
+                                    String maxTemp = descArray[count].trim();
+                                    dayOfWeather.setMaxTemp(maxTemp);
+                                    Log.d("MyTag", "maxTemp is " + maxTemp);
+                                    count++;
+                                }
+                                else if(descArray[count].contains("Minimum Temperature")){
+                                    String minTemp = descArray[count].trim();
+                                    dayOfWeather.setMinTemp(minTemp);
+                                    Log.d("MyTag", "minTemp is " + minTemp);
+                                    count++;
+                                }
+                                else if (descArray[count].contains("Wind Direction")){
+                                    String windDirection = descArray[count].trim();
+                                    dayOfWeather.setWindDirection(windDirection);
+                                    Log.d("MyTag", "windDirection is " + windDirection);
+                                    count++;
+                                }
+                                else if (descArray[count].contains("Wind Speed")){
+                                    String windSpeed = descArray[count].trim();
+                                    dayOfWeather.setWindSpeed(windSpeed);
+                                    Log.d("MyTag", "windSpeed is " + windSpeed);
+                                    count++;
+                                }
+                                else if (descArray[count].contains("Visibility")){
+                                    String visibility = descArray[count].trim();
+                                    dayOfWeather.setVisibility(visibility);
+                                    Log.d("MyTag", "visibility is " + visibility);
+                                    count++;
+                                }
+                                else if (descArray[count].contains("Pressure")){
+                                    String pressure = descArray[count].trim();
+                                    dayOfWeather.setPressure(pressure);
+                                    Log.d("MyTag", "pressure is " + pressure);
+                                    count++;
+                                }
+                                else if(descArray[count].contains("Humidity")){
+                                    String humidity = descArray[count].trim();
+                                    dayOfWeather.setHumidity(humidity);
+                                    Log.d("MyTag", "humidity is " + humidity);
+                                    count++;
+                                }
+                                else if(descArray[count].contains("UV Risk")){
+                                    String uvRisk = descArray[count].trim();
+                                    dayOfWeather.setUVRisk(uvRisk);
+                                    Log.d("MyTag", "uvRisk is " + uvRisk);
+                                    count++;
+                                }
+                                else if (descArray[count].contains("Pollution")){
+                                    String pollution = descArray[count].trim();
+                                    dayOfWeather.setPollution(pollution);
+                                    Log.d("MyTag", "pollution is " + pollution);
+                                    count++;
+                                }
+                                else if(descArray[count].contains("Sunrise")){
+                                    String sunriseTime = descArray[count].trim();
+                                    dayOfWeather.setSunriseTime(sunriseTime);
+                                    Log.d("MyTag", "sunriseTime is " + sunriseTime);
+                                    count++;
+                                }
+                                else if(descArray[count].contains("Sunset")){
+                                    String sunsetTime = descArray[count].trim();
+                                    dayOfWeather.setSunsetTime(sunsetTime);
+                                    Log.d("MyTag", "sunsetTime is " + sunsetTime);
+                                    count++;
+                                }
+                                else{
+                                    count++;
+                                }
+                            }
+                            //Check if any variables weren't assigned and give them a value so they aren't null
+                            if (dayOfWeather.getDay() == null){
+                                dayOfWeather.setDay("Day Unavailable");
+                            }
+                            if (dayOfWeather.getWeather() == null){
+                                dayOfWeather.setWeather("Weather Status Unavailable");
+                            }
+                            if (dayOfWeather.getMaxTemp() == null){
+                                dayOfWeather.setMaxTemp("Maximum Temperature unavailable");
+                            }
+                            if (dayOfWeather.getMinTemp() == null){
+                                dayOfWeather.setMinTemp("Minimum Temperature Unavailable");
+                            }
+                            if (dayOfWeather.getWindDirection() == null){
+                                dayOfWeather.setWindDirection("Wind Direction Unavailable");
+                            }
+                            if (dayOfWeather.getWindSpeed() == null){
+                                dayOfWeather.setWindSpeed("Wind Speed Unavailable");
+                            }
+                            if (dayOfWeather.getVisibility() == null){
+                                dayOfWeather.setVisibility("Visibility Unavailable");
+                            }
+                            if (dayOfWeather.getPressure() == null){
+                                dayOfWeather.setPressure("Pressure Unavailable");
+                            }
+                            if (dayOfWeather.getHumidity() == null){
+                                dayOfWeather.setHumidity("Humidity Unavailable");
+                            }
+                            if (dayOfWeather.getUVRisk() == null){
+                                dayOfWeather.setUVRisk("UV Risk Unavailable");
+                            }
+                            if (dayOfWeather.getPollution() == null){
+                                dayOfWeather.setPollution("Pollution Unavailable");
+                            }
+                            if (dayOfWeather.getSunriseTime() == null){
+                                dayOfWeather.setSunriseTime("Sunrise Time Unavailable");
+                            }
+                            if (dayOfWeather.getSunsetTime() == null){
+                                dayOfWeather.setSunsetTime("Sunset Time Unavailable");
+                            }
                         }
                     } else if (eventType == XmlPullParser.END_TAG) // Found an end tag
                     {
@@ -389,7 +526,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
             // Build message object
             Message message = new Message(); // Set message type
-            message.what = RETRIEVE_WEATHER;
+            message.what = RETRIEVE_3_DAY_WEATHER;
             message.obj = threeDayForecast;
 
             // Send message to main thread Handler
