@@ -28,6 +28,7 @@ import java.io.StringReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.LinkedList;
+
 //Callum Smith - S2145086
 public class MainActivity extends AppCompatActivity implements OnClickListener {
     private ViewSwitcher switcher;
@@ -81,10 +82,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     }
 
     public void onClick(View v) {
-        if(v == glasgowObservationButton){
+        if (v == glasgowObservationButton) {
             new Thread(new RetrieveObservation()).start();
-        }
-        else if (v == glasgowButton) {
+        } else if (v == glasgowButton) {
             String glasgowCode = "2648579";
             new Thread(new RetrieveThreeDayWeather(glasgowCode)).start();
         } else if (v == newYorkButton) {
@@ -116,9 +116,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 public void handleMessage(Message msg) {
                     // Check which thread sent the message
                     if (msg.what == RETRIEVE_OBSERVATION) {
-                        observationDisplay.setText((String)msg.obj);
+                        observationDisplay.setText((String) msg.obj);
                     } else if (msg.what == RETRIEVE_3_DAY_WEATHER) {
-                        threeDayWeatherDisplay.setText((String)msg.obj);
+                        threeDayWeatherDisplay.setText((String) msg.obj);
                     }
                 }
             };
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                             //split <title> into day and weather data
                             String[] titleArray = temp.split("-");
                             String day = titleArray[0].trim();
-                            String time = titleArray[1].split(":")[0]+titleArray[1].split(":")[1].trim();
+                            String time = titleArray[1].split(":")[0] + titleArray[1].split(":")[1].trim();
                             String summary = titleArray[1].split(":")[2].split(",")[0].trim();
 
                             Log.d("MyTag", "Day is " + day +
@@ -203,76 +203,70 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                             Log.d("MyTag", "descArray is " + descArray.length + " entries long");
 
                             int count = 0;
-                            for (String j : descArray){
-                                if(descArray[count].contains("Temperature")){
+                            for (String j : descArray) {
+                                if (descArray[count].contains("Temperature")) {
                                     String currentTemp = descArray[count].trim();
                                     observation.setCurrentTemperature(currentTemp);
                                     Log.d("MyTag", "maxTemp is " + currentTemp);
                                     count++;
-                                }
-                                else if (descArray[count].contains("Wind Direction")){
+                                } else if (descArray[count].contains("Wind Direction")) {
                                     String windDirection = descArray[count].trim();
                                     observation.setWindDirection(windDirection);
                                     Log.d("MyTag", "windDirection is " + windDirection);
                                     count++;
-                                }
-                                else if (descArray[count].contains("Wind Speed")){
+                                } else if (descArray[count].contains("Wind Speed")) {
                                     String windSpeed = descArray[count].trim();
                                     observation.setWindSpeed(windSpeed);
                                     Log.d("MyTag", "windSpeed is " + windSpeed);
                                     count++;
-                                }
-                                else if (descArray[count].contains("Visibility")){
+                                } else if (descArray[count].contains("Visibility")) {
                                     String visibility = descArray[count].trim();
                                     observation.setVisibility(visibility);
                                     Log.d("MyTag", "visibility is " + visibility);
                                     count++;
-                                }
-                                else if (descArray[count].contains("Pressure")){
+                                } else if (descArray[count].contains("Pressure")) {
                                     String pressure = descArray[count].trim();
                                     observation.setPressure(pressure);
                                     Log.d("MyTag", "pressure is " + pressure);
                                     count++;
-                                }
-                                else if(descArray[count].contains("Humidity")){
+                                } else if (descArray[count].contains("Humidity")) {
                                     String humidity = descArray[count].trim();
                                     observation.setHumidity(humidity);
                                     Log.d("MyTag", "humidity is " + humidity);
                                     count++;
-                                }
-                                else{
+                                } else {
                                     count++;
                                 }
                             }
                             //Check if any variables weren't assigned and give them a value so they aren't null
-                            if (observation.getDay() == null){
+                            if (observation.getDay() == null) {
                                 observation.setDay("Day Unavailable");
                             }
-                            if (observation.getTime() == null){
+                            if (observation.getTime() == null) {
                                 observation.setTime("Time Unavailable");
                             }
-                            if (observation.getSummary() == null){
+                            if (observation.getSummary() == null) {
                                 observation.setSummary("Summary unavailable");
                             }
-                            if (observation.getCurrentTemperature()== null){
+                            if (observation.getCurrentTemperature() == null) {
                                 observation.setCurrentTemperature("Current Temperature Unavailable");
                             }
-                            if (observation.getWindDirection() == null){
+                            if (observation.getWindDirection() == null) {
                                 observation.setWindDirection("Wind Direction Unavailable");
                             }
-                            if (observation.getWindSpeed() == null){
+                            if (observation.getWindSpeed() == null) {
                                 observation.setWindSpeed("Wind Speed Unavailable");
                             }
-                            if (observation.getVisibility() == null){
+                            if (observation.getVisibility() == null) {
                                 observation.setVisibility("Visibility Unavailable");
                             }
-                            if (observation.getPressure() == null){
+                            if (observation.getPressure() == null) {
                                 observation.setPressure("Pressure Unavailable");
                             }
-                            if (observation.getPressureStatus() == null){
+                            if (observation.getPressureStatus() == null) {
                                 observation.setPressureStatus("Pressure Status Unavailable");
                             }
-                            if (observation.getHumidity() == null){
+                            if (observation.getHumidity() == null) {
                                 observation.setHumidity("Humidity Unavailable");
                             }
                         }
@@ -388,115 +382,104 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                             Log.d("MyTag", "descArray is " + descArray.length + " entries long");
 
                             int count = 0;
-                            for (String j : descArray){
-                                if(descArray[count].contains("Maximum Temperature")){
+                            for (String j : descArray) {
+                                if (descArray[count].contains("Maximum Temperature")) {
                                     String maxTemp = descArray[count].trim();
                                     dayOfWeather.setMaxTemp(maxTemp);
                                     Log.d("MyTag", "maxTemp is " + maxTemp);
                                     count++;
-                                }
-                                else if(descArray[count].contains("Minimum Temperature")){
+                                } else if (descArray[count].contains("Minimum Temperature")) {
                                     String minTemp = descArray[count].trim();
                                     dayOfWeather.setMinTemp(minTemp);
                                     Log.d("MyTag", "minTemp is " + minTemp);
                                     count++;
-                                }
-                                else if (descArray[count].contains("Wind Direction")){
+                                } else if (descArray[count].contains("Wind Direction")) {
                                     String windDirection = descArray[count].trim();
                                     dayOfWeather.setWindDirection(windDirection);
                                     Log.d("MyTag", "windDirection is " + windDirection);
                                     count++;
-                                }
-                                else if (descArray[count].contains("Wind Speed")){
+                                } else if (descArray[count].contains("Wind Speed")) {
                                     String windSpeed = descArray[count].trim();
                                     dayOfWeather.setWindSpeed(windSpeed);
                                     Log.d("MyTag", "windSpeed is " + windSpeed);
                                     count++;
-                                }
-                                else if (descArray[count].contains("Visibility")){
+                                } else if (descArray[count].contains("Visibility")) {
                                     String visibility = descArray[count].trim();
                                     dayOfWeather.setVisibility(visibility);
                                     Log.d("MyTag", "visibility is " + visibility);
                                     count++;
-                                }
-                                else if (descArray[count].contains("Pressure")){
+                                } else if (descArray[count].contains("Pressure")) {
                                     String pressure = descArray[count].trim();
                                     dayOfWeather.setPressure(pressure);
                                     Log.d("MyTag", "pressure is " + pressure);
                                     count++;
-                                }
-                                else if(descArray[count].contains("Humidity")){
+                                } else if (descArray[count].contains("Humidity")) {
                                     String humidity = descArray[count].trim();
                                     dayOfWeather.setHumidity(humidity);
                                     Log.d("MyTag", "humidity is " + humidity);
                                     count++;
-                                }
-                                else if(descArray[count].contains("UV Risk")){
+                                } else if (descArray[count].contains("UV Risk")) {
                                     String uvRisk = descArray[count].trim();
                                     dayOfWeather.setUVRisk(uvRisk);
                                     Log.d("MyTag", "uvRisk is " + uvRisk);
                                     count++;
-                                }
-                                else if (descArray[count].contains("Pollution")){
+                                } else if (descArray[count].contains("Pollution")) {
                                     String pollution = descArray[count].trim();
                                     dayOfWeather.setPollution(pollution);
                                     Log.d("MyTag", "pollution is " + pollution);
                                     count++;
-                                }
-                                else if(descArray[count].contains("Sunrise")){
+                                } else if (descArray[count].contains("Sunrise")) {
                                     String sunriseTime = descArray[count].trim();
                                     dayOfWeather.setSunriseTime(sunriseTime);
                                     Log.d("MyTag", "sunriseTime is " + sunriseTime);
                                     count++;
-                                }
-                                else if(descArray[count].contains("Sunset")){
+                                } else if (descArray[count].contains("Sunset")) {
                                     String sunsetTime = descArray[count].trim();
                                     dayOfWeather.setSunsetTime(sunsetTime);
                                     Log.d("MyTag", "sunsetTime is " + sunsetTime);
                                     count++;
-                                }
-                                else{
+                                } else {
                                     count++;
                                 }
                             }
                             //Check if any variables weren't assigned and give them a value so they aren't null
-                            if (dayOfWeather.getDay() == null){
+                            if (dayOfWeather.getDay() == null) {
                                 dayOfWeather.setDay("Day Unavailable");
                             }
-                            if (dayOfWeather.getWeather() == null){
+                            if (dayOfWeather.getWeather() == null) {
                                 dayOfWeather.setWeather("Weather Status Unavailable");
                             }
-                            if (dayOfWeather.getMaxTemp() == null){
+                            if (dayOfWeather.getMaxTemp() == null) {
                                 dayOfWeather.setMaxTemp("Maximum Temperature unavailable");
                             }
-                            if (dayOfWeather.getMinTemp() == null){
+                            if (dayOfWeather.getMinTemp() == null) {
                                 dayOfWeather.setMinTemp("Minimum Temperature Unavailable");
                             }
-                            if (dayOfWeather.getWindDirection() == null){
+                            if (dayOfWeather.getWindDirection() == null) {
                                 dayOfWeather.setWindDirection("Wind Direction Unavailable");
                             }
-                            if (dayOfWeather.getWindSpeed() == null){
+                            if (dayOfWeather.getWindSpeed() == null) {
                                 dayOfWeather.setWindSpeed("Wind Speed Unavailable");
                             }
-                            if (dayOfWeather.getVisibility() == null){
+                            if (dayOfWeather.getVisibility() == null) {
                                 dayOfWeather.setVisibility("Visibility Unavailable");
                             }
-                            if (dayOfWeather.getPressure() == null){
+                            if (dayOfWeather.getPressure() == null) {
                                 dayOfWeather.setPressure("Pressure Unavailable");
                             }
-                            if (dayOfWeather.getHumidity() == null){
+                            if (dayOfWeather.getHumidity() == null) {
                                 dayOfWeather.setHumidity("Humidity Unavailable");
                             }
-                            if (dayOfWeather.getUVRisk() == null){
+                            if (dayOfWeather.getUVRisk() == null) {
                                 dayOfWeather.setUVRisk("UV Risk Unavailable");
                             }
-                            if (dayOfWeather.getPollution() == null){
+                            if (dayOfWeather.getPollution() == null) {
                                 dayOfWeather.setPollution("Pollution Unavailable");
                             }
-                            if (dayOfWeather.getSunriseTime() == null){
+                            if (dayOfWeather.getSunriseTime() == null) {
                                 dayOfWeather.setSunriseTime("Sunrise Time Unavailable");
                             }
-                            if (dayOfWeather.getSunsetTime() == null){
+                            if (dayOfWeather.getSunsetTime() == null) {
                                 dayOfWeather.setSunsetTime("Sunset Time Unavailable");
                             }
                         }

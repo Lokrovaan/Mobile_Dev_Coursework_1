@@ -1,4 +1,5 @@
 package com.example.smith_callum_s2145086;
+
 //Callum Smith - S2145086
 public class Observation {
     //Retrieved from <title> tag in RSS Feed
@@ -97,7 +98,7 @@ public class Observation {
 
     @Override
     public String toString() {
-        return  day + "\n" +
+        return day + "\n" +
                 time + "\n" +
                 summary + "\n" +
                 currentTemperature + "\n" +

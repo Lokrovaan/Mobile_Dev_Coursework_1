@@ -1,4 +1,5 @@
 package com.example.smith_callum_s2145086;
+
 //Callum Smith - S2145086
 public class DayOfWeather {
     //retrieved from <title> tag in RSS feed
@@ -120,9 +121,10 @@ public class DayOfWeather {
     public void setSunsetTime(String sunsetTime) {
         this.sunsetTime = sunsetTime;
     }
+
     @Override
     public String toString() {
-        return  day + "\n" +
+        return day + "\n" +
                 weather + "\n" +
                 maxTemp + "\n" +
                 minTemp + "\n" +

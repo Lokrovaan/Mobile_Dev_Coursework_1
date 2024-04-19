@@ -111,9 +111,9 @@
 
     <!--2nd Page for View Switcher-->
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/locationsPage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/locationsPage"
         android:background="@color/PowderBlue">
 
         <LinearLayout
@@ -164,113 +164,113 @@
             </ScrollView>
         </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/buttonSection"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/CornflowerBlue"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@id/foot2">
-
-        <TextView
+        <LinearLayout
+            android:id="@+id/buttonSection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Select a city below to view it's weather information"
-            android:textAlignment="center"
-            android:textColor="@color/White"
-            android:textSize="17sp" />
+            android:background="@color/CornflowerBlue"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/foot2">
 
-        <TableLayout
-            android:id="@+id/buttonTable"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <TableRow
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:text="Select a city below to view it's weather information"
+                android:textAlignment="center"
+                android:textColor="@color/White"
+                android:textSize="17sp" />
 
-                <Button
-                    android:id="@+id/glasgowButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/Orchid"
-                    android:text="Glasgow"
-                    android:textColor="@color/White" />
+            <TableLayout
+                android:id="@+id/buttonTable"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
 
-                <Button
-                    android:id="@+id/newYorkButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/Orchid"
-                    android:text="New York"
-                    android:textColor="@color/White" />
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <Button
-                    android:id="@+id/londonButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/Orchid"
-                    android:text="London"
-                    android:textColor="@color/White" />
+                    <Button
+                        android:id="@+id/glasgowButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/Orchid"
+                        android:text="Glasgow"
+                        android:textColor="@color/White" />
 
-            </TableRow>
+                    <Button
+                        android:id="@+id/newYorkButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/Orchid"
+                        android:text="New York"
+                        android:textColor="@color/White" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                    <Button
+                        android:id="@+id/londonButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/Orchid"
+                        android:text="London"
+                        android:textColor="@color/White" />
 
-                <Button
-                    android:id="@+id/omanButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/Orchid"
-                    android:text="Oman"
-                    android:textColor="@color/White" />
+                </TableRow>
 
-                <Button
-                    android:id="@+id/mauritiusButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/Orchid"
-                    android:text="Mauritius"
-                    android:textColor="@color/White" />
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <Button
-                    android:id="@+id/bangladeshButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/Orchid"
-                    android:text="Bangladesh"
-                    android:textColor="@color/White" />
-            </TableRow>
+                    <Button
+                        android:id="@+id/omanButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/Orchid"
+                        android:text="Oman"
+                        android:textColor="@color/White" />
 
-        </TableLayout>
-    </LinearLayout>
+                    <Button
+                        android:id="@+id/mauritiusButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/Orchid"
+                        android:text="Mauritius"
+                        android:textColor="@color/White" />
 
-    <LinearLayout
-        android:id="@+id/foot2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/CornflowerBlue"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent">
+                    <Button
+                        android:id="@+id/bangladeshButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/Orchid"
+                        android:text="Bangladesh"
+                        android:textColor="@color/White" />
+                </TableRow>
 
-        <TextView
-            android:id="@+id/bottomText2"
+            </TableLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/foot2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Callum Smith - S2145086"
-            android:textAlignment="center"
-            android:textColor="@color/White"
-            android:textSize="11sp" />
+            android:background="@color/CornflowerBlue"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/bottomText2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Callum Smith - S2145086"
+                android:textAlignment="center"
+                android:textColor="@color/White"
+                android:textSize="11sp" />
 
-    </ViewSwitcher>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ViewSwitcher>
